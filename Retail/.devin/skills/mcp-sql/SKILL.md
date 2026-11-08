@@ -1,1 +1,0 @@
-welcome to the mcp-sql skill

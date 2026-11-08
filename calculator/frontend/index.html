@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All-in-One Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Authentication Modal -->
+    <div id="auth-modal" class="auth-modal">
+        <div class="auth-container">
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">Login</button>
+                <button class="auth-tab" data-tab="register">Register</button>
+            </div>
+
+            <div class="auth-forms">
+                <!-- Login Form -->
+                <form id="login-form" class="auth-form active">
+                    <h2>Login</h2>
+                    <div class="form-group">
+                        <label for="login-username">Username</label>
+                        <input type="text" id="login-username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <button type="submit" class="btn auth-btn">Login</button>
+                    <div id="login-error" class="error-message"></div>
+                </form>
+
+                <!-- Register Form -->
+                <form id="register-form" class="auth-form">
+                    <h2>Register</h2>
+                    <div class="form-group">
+                        <label for="register-username">Username</label>
+                        <input type="text" id="register-username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">Email</label>
+                        <input type="email" id="register-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Password</label>
+                        <input type="password" id="register-password" required>
+                    </div>
+                    <button type="submit" class="btn auth-btn">Register</button>
+                    <div id="register-error" class="error-message"></div>
+                </form>
+            </div>
+
+            <button id="close-auth" class="close-btn">×</button>
+        </div>
+    </div>
+
+    <!-- User Menu -->
+    <div id="user-menu" class="user-menu" style="display: none;">
+        <span id="user-name"></span>
+        <button id="logout-btn" class="btn small-btn">Logout</button>
+    </div>
+
+    <div class="calculator-container">
+        <div class="calculator">
+            <!-- Mode Tabs -->
+            <div class="mode-tabs">
+                <button class="tab-btn active" data-mode="basic">Basic</button>
+                <button class="tab-btn" data-mode="scientific">Scientific</button>
+                <button class="tab-btn" data-mode="programmer">Programmer</button>
+                <button class="tab-btn" data-mode="converter">Converter</button>
+            </div>
+
+            <!-- Display Section -->
+            <div class="display-section">
+                <div class="memory-indicator" id="memory-indicator">M</div>
+                <input type="text" id="display" readonly placeholder="0">
+                <button id="clear-btn" class="clear-btn">C</button>
+            </div>
+
+            <!-- History Panel -->
+            <div class="history-panel" id="history-panel">
+                <div class="history-header">
+                    <h3>History</h3>
+                    <div class="history-actions">
+                        <button id="clear-history" class="small-btn">Clear</button>
+                        <button id="save-history" class="small-btn">Save</button>
+                    </div>
+                </div>
+                <div id="history-list"></div>
+            </div>
+
+            <!-- Mode Panels -->
+            <div class="mode-panels">
+                <!-- Basic Mode Panel -->
+                <div class="mode-panel active" id="basic-panel">
+                    <div class="buttons-grid basic-grid">
+                        <!-- Variables -->
+                        <button class="btn variable-btn" data-var="X">X</button>
+                        <button class="btn variable-btn" data-var="Y">Y</button>
+                        <button class="btn variable-btn" data-var="Z">Z</button>
+                        <button class="btn operator-btn" data-op="^">^</button>
+                        <button class="btn operator-btn" data-op="√">√</button>
+
+                        <!-- Numbers and operators -->
+                        <button class="btn number-btn" data-num="7">7</button>
+                        <button class="btn number-btn" data-num="8">8</button>
+                        <button class="btn number-btn" data-num="9">9</button>
+                        <button class="btn operator-btn" data-op="/">÷</button>
+                        <button class="btn operator-btn" data-op="%">%</button>
+
+                        <button class="btn number-btn" data-num="4">4</button>
+                        <button class="btn number-btn" data-num="5">5</button>
+                        <button class="btn number-btn" data-num="6">6</button>
+                        <button class="btn operator-btn" data-op="*">×</button>
+                        <button class="btn function-btn" data-func="(">(</button>
+
+                        <button class="btn number-btn" data-num="1">1</button>
+                        <button class="btn number-btn" data-num="2">2</button>
+                        <button class="btn number-btn" data-num="3">3</button>
+                        <button class="btn operator-btn" data-op="-">−</button>
+                        <button class="btn function-btn" data-func=")">)</button>
+
+                        <button class="btn number-btn" data-num="0">0</button>
+                        <button class="btn number-btn" data-num=".">.</button>
+                        <button class="btn operator-btn" data-op="+">+</button>
+                        <button class="btn equals-btn" id="equals-btn">=</button>
+                        <button class="btn operator-btn" data-op="backspace">⌫</button>
+
+                        <!-- Variable assignment and memory -->
+                        <button class="btn assign-btn" data-var="X">=X</button>
+                        <button class="btn assign-btn" data-var="Y">=Y</button>
+                        <button class="btn assign-btn" data-var="Z">=Z</button>
+                        <button class="btn memory-btn" id="memory-recall">MR</button>
+                        <button class="btn" id="history-toggle">H</button>
+                    </div>
+                </div>
+
+                <!-- Scientific Mode Panel -->
+                <div class="mode-panel" id="scientific-panel">
+                    <div class="scientific-functions">
+                        <button class="btn sci-btn" data-func="sin">sin</button>
+                        <button class="btn sci-btn" data-func="cos">cos</button>
+                        <button class="btn sci-btn" data-func="tan">tan</button>
+                        <button class="btn sci-btn" data-func="asin">sin⁻¹</button>
+                        <button class="btn sci-btn" data-func="acos">cos⁻¹</button>
+                        <button class="btn sci-btn" data-func="atan">tan⁻¹</button>
+                        <button class="btn sci-btn" data-func="log">log</button>
+                        <button class="btn sci-btn" data-func="ln">ln</button>
+                        <button class="btn sci-btn" data-func="sqrt">√</button>
+                        <button class="btn sci-btn" data-func="abs">|x|</button>
+                    </div>
+
+                    <div class="buttons-grid scientific-grid">
+                        <button class="btn sci-btn" data-func="π">π</button>
+                        <button class="btn sci-btn" data-func="e">e</button>
+                        <button class="btn sci-btn" data-func="^2">x²</button>
+                        <button class="btn sci-btn" data-func="^3">x³</button>
+                        <button class="btn sci-btn" data-func="^">x^y</button>
+                        <button class="btn sci-btn" data-func="yroot">ʸ√x</button>
+                        <button class="btn sci-btn" data-func="factorial">n!</button>
+                        <button class="btn sci-btn" data-func="exp">e^x</button>
+                        <button class="btn sci-btn" data-func="1/x">1/x</button>
+                        <button class="btn sci-btn" data-func="rand">Rand</button>
+
+                        <!-- Numbers and operators -->
+                        <button class="btn number-btn" data-num="7">7</button>
+                        <button class="btn number-btn" data-num="8">8</button>
+                        <button class="btn number-btn" data-num="9">9</button>
+                        <button class="btn operator-btn" data-op="/">÷</button>
+                        <button class="btn operator-btn" data-op="%">%</button>
+
+                        <button class="btn number-btn" data-num="4">4</button>
+                        <button class="btn number-btn" data-num="5">5</button>
+                        <button class="btn number-btn" data-num="6">6</button>
+                        <button class="btn operator-btn" data-op="*">×</button>
+                        <button class="btn function-btn" data-func="(">(</button>
+
+                        <button class="btn number-btn" data-num="1">1</button>
+                        <button class="btn number-btn" data-num="2">2</button>
+                        <button class="btn number-btn" data-num="3">3</button>
+                        <button class="btn operator-btn" data-op="-">−</button>
+                        <button class="btn function-btn" data-func=")">)</button>
+
+                        <button class="btn number-btn" data-num="0">0</button>
+                        <button class="btn number-btn" data-num=".">.</button>
+                        <button class="btn operator-btn" data-op="+">+</button>
+                        <button class="btn equals-btn" id="scientific-equals">=</button>
+                        <button class="btn operator-btn" data-op="backspace">⌫</button>
+                    </div>
+                </div>
+
+                <!-- Programmer Mode Panel -->
+                <div class="mode-panel" id="programmer-panel">
+                    <div class="base-selector">
+                        <label>Base:</label>
+                        <select id="base-select">
+                            <option value="10">Decimal</option>
+                            <option value="16">Hexadecimal</option>
+                            <option value="2">Binary</option>
+                            <option value="8">Octal</option>
+                        </select>
+                    </div>
+
+                    <div class="programmer-functions">
+                        <button class="btn prog-btn" data-func="AND">AND</button>
+                        <button class="btn prog-btn" data-func="OR">OR</button>
+                        <button class="btn prog-btn" data-func="XOR">XOR</button>
+                        <button class="btn prog-btn" data-func="NOT">NOT</button>
+                        <button class="btn prog-btn" data-func="SHL">SHL</button>
+                        <button class="btn prog-btn" data-func="SHR">SHR</button>
+                    </div>
+
+                    <div class="buttons-grid programmer-grid">
+                        <button class="btn number-btn" data-num="7">7</button>
+                        <button class="btn number-btn" data-num="8">8</button>
+                        <button class="btn number-btn" data-num="9">9</button>
+                        <button class="btn prog-btn" data-func="(">(</button>
+                        <button class="btn prog-btn" data-func=")">)</button>
+
+                        <button class="btn number-btn" data-num="4">4</button>
+                        <button class="btn number-btn" data-num="5">5</button>
+                        <button class="btn number-btn" data-num="6">6</button>
+                        <button class="btn operator-btn" data-op="*">×</button>
+                        <button class="btn operator-btn" data-op="/">÷</button>
+
+                        <button class="btn number-btn" data-num="1">1</button>
+                        <button class="btn number-btn" data-num="2">2</button>
+                        <button class="btn number-btn" data-num="3">3</button>
+                        <button class="btn operator-btn" data-op="+">+</button>
+                        <button class="btn operator-btn" data-op="-">−</button>
+
+                        <button class="btn number-btn" data-num="0">0</button>
+                        <button class="btn number-btn" data-num="A">A</button>
+                        <button class="btn number-btn" data-num="B">B</button>
+                        <button class="btn number-btn" data-num="C">C</button>
+                        <button class="btn number-btn" data-num="D">D</button>
+                        <button class="btn number-btn" data-num="E">E</button>
+                        <button class="btn number-btn" data-num="F">F</button>
+
+                        <button class="btn number-btn" data-num="%">%</button>
+                        <button class="btn" data-func="clear">CE</button>
+                        <button class="btn equals-btn" id="programmer-equals">=</button>
+                        <button class="btn operator-btn" data-op="backspace">⌫</button>
+                    </div>
+                </div>
+
+                <!-- Converter Panel -->
+                <div class="mode-panel" id="converter-panel">
+                    <div class="converter-section">
+                        <h3>Unit Converter</h3>
+                        <div class="converter-controls">
+                            <select id="converter-category">
+                                <option value="length">Length</option>
+                                <option value="weight">Weight</option>
+                                <option value="temperature">Temperature</option>
+                                <option value="volume">Volume</option>
+                                <option value="time">Time</option>
+                                <option value="data">Data</option>
+                            </select>
+
+                            <div class="converter-input">
+                                <input type="number" id="converter-value" placeholder="Enter value">
+                                <select id="converter-from">
+                                    <option value="m">Meters</option>
+                                </select>
+                            </div>
+
+                            <div class="converter-arrow">→</div>
+
+                            <div class="converter-output">
+                                <input type="text" id="converter-result" readonly placeholder="Result">
+                                <select id="converter-to">
+                                    <option value="km">Kilometers</option>
+                                </select>
+                            </div>
+
+                            <button id="convert-btn" class="btn convert-btn">Convert</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="api.js"></script>
+    <script src="memory.js"></script>
+    <script src="scientific.js"></script>
+    <script src="programmer.js"></script>
+    <script src="converter.js"></script>
+    <script src="calculator.js"></script>
+</body>
+</html>
